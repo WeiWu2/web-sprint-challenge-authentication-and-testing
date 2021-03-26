@@ -17,13 +17,14 @@ const validUsername = (req, res, next) => {
         //check if username is taken
         if (user) 
         res.status(400).json({ message: "username taken" });
-        else next();
+        else 
+        next();
       })
-      .catch(next());
+      .catch(next);
 
 };
 
-
+//builds JWToken
 const buildToken = (user) => {
   const payload = {
     subject: user.id,
@@ -35,6 +36,7 @@ const buildToken = (user) => {
   };
   return jwt.sign(payload, jwtSecret, config);
 };
+
 module.exports = {
   validUsername,
   buildToken,

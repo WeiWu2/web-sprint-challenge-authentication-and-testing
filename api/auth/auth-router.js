@@ -5,10 +5,9 @@ const Auth = require("./auth-model");
 
 
 router.post("/register", authMiddleware.validBody,authMiddleware.validUsername, (req, res, next) => {
-  const { username, password } = req.body;
-  const credentials = { username, password };
+  const credentials = req.body;
   const rounds = process.env.BCRYPT_ROUNDS || 8;
-  const hash = bcryptjs.hashSync(password, rounds);
+  const hash = bcryptjs.hashSync(credentials.password, rounds);
   credentials.password = hash;
   Auth.add(credentials)
     .then((user) => {
