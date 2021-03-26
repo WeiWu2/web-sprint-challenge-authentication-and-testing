@@ -3,7 +3,7 @@ const router = require("express").Router();
 const authMiddleware = require("./auth-middleware");
 const Auth = require("./auth-model");
 
-
+// if req.body is valid, hashes password then inserts the username and hashed password into db
 router.post("/register", authMiddleware.validBody,authMiddleware.validUsername, (req, res, next) => {
   const credentials = req.body;
   const rounds = process.env.BCRYPT_ROUNDS || 8;
@@ -16,6 +16,7 @@ router.post("/register", authMiddleware.validBody,authMiddleware.validUsername, 
     .catch(next);
 });
 
+// if username/password are correct, builds a token and sends it back to client
 router.post("/login", authMiddleware.validBody, (req, res, next) => {
   Auth.findByName(req.body.username)
   .then((user) => {

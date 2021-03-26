@@ -2,19 +2,20 @@ const Auth = require("./auth-model");
 const jwt = require("jsonwebtoken");
 const { jwtSecret } = require("../../config/secrets");
 
-
+//check for username and password existing in req.body
 const validBody = (req,res,next) => {
-    //check for username and password existing in req.body
     const { username, password } = req.body;
     if (!username || !password)
       res.status(400).json({ message: "username and password required" });
     else
     next()
 }
+
+ //check if username is taken
 const validUsername = (req, res, next) => {
     Auth.findByName(req.body.username)
       .then((user) => {
-        //check if username is taken
+
         if (user) 
         res.status(400).json({ message: "username taken" });
         else 
